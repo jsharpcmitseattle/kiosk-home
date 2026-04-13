@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kiosk Home</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f4f4f9; }
+        .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 80%; }
+        button, input { padding: 15px; margin: 10px; font-size: 18px; border-radius: 10px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; }
+        button { background: #007AFF; color: white; border: none; cursor: pointer; font-weight: bold; }
+        .survey-section { margin-top: 30px; border-top: 1px solid #eee; pt-20px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Welcome</h1>
+    
+    <button onclick="window.location.href=' https://theretirementsolution.com/communications-profile'">Communications Profile</button>
+
+    <div class="survey-section">
+        <h3>Personalized Survey</h3>
+        <p>Please enter your ID/Code below:</p>
+        <input type="text" id="surveyID" placeholder="Enter ID here...">
+        <button onclick="goSurvey()" style="background: #34C759;">Open My Survey</button>
+    </div>
+</div>
+
+<script>
+    function goSurvey() {
+        var id = document.getElementById('surveyID').value;
+        if (id) {
+            // This takes their ID and adds it to your base survey URL
+            window.location.href = 'https://YOUR-SURVEY-LINK.com/' + id;
+        } else {
+            alert('Please enter an ID');
+        }
+    }
+</script>
+
+</body>
+</html>
