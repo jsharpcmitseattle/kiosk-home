@@ -49,6 +49,13 @@
             border-top: 1px solid #eee; 
             padding-top: 20px; 
         }
+        #browser-info {
+            margin-top: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
         h1 { color: #333; margin-bottom: 20px; }
         h3 { color: #666; }
     </style>
@@ -66,46 +73,63 @@
         <input type="text" id="surveyID" placeholder="Enter ID here...">
         <button onclick="goSurvey()" style="background: #34C759;">Open My Survey</button>
     </div>
+
+    <p id="browser-info">Detecting Browser...</p>
 </div>
 
 <script>
-    // --- SURVEY LOGIC ---
+    // --- 1. SURVEY LOGIC ---
     function goSurvey() {
         var id = document.getElementById('surveyID').value;
         if (id) {
-            // Replace the URL below with your actual survey base URL
+            // Replace with your actual survey base URL
             window.location.href = 'https://YOUR-SURVEY-LINK.com/' + encodeURIComponent(id);
         } else {
             alert('Please enter an ID');
         }
     }
 
-    // --- IDLE TIMER LOGIC ---
+    // --- 2. BROWSER DETECTION LOGIC ---
+    function detectBrowser() {
+        var userAgent = navigator.userAgent;
+        var info = document.getElementById('browser-info');
+
+        if (userAgent.indexOf("EdgiOS") > -1) {
+            info.innerText = "Running in: Microsoft Edge";
+            info.style.color = "#0078d4";
+        } else if (userAgent.indexOf("Safari") > -1 && userAgent.indexOf("CriOS") == -1) {
+            info.innerText = "Running in: Safari / Web Clip";
+            info.style.color = "#888";
+        } else {
+            info.innerText = "Browser: Other / Unknown";
+            info.style.color = "#ff3b30";
+        }
+    }
+
+    // --- 3. IDLE TIMER LOGIC ---
     (function() {
         let timeout;
-        const idleTimeLimit = 5 * 60 * 1000; // 5 minutes in milliseconds
+        const idleTimeLimit = 5 * 60 * 1000; // 5 Minutes
 
         function resetToHome() {
-            // Clear the input field for the next user
+            // Clear input and reload the home page
             document.getElementById('surveyID').value = '';
-            // Refresh/Redirect to the home page URL
-            window.location.href = window.location.pathname; 
+            window.location.href = window.location.origin + window.location.pathname; 
         }
 
         function startTimer() {
-            // Clear existing timer and start a new one
             clearTimeout(timeout);
             timeout = setTimeout(resetToHome, idleTimeLimit);
         }
 
-        // List of events to watch for (touches, clicks, typing)
-        const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-        
-        events.forEach(function(name) {
+        // Track touches, clicks, and typing to reset the 5-minute clock
+        const events = ['mousedown', 'keypress', 'scroll', 'touchstart', 'click'];
+        events.forEach(name => {
             document.addEventListener(name, startTimer, true);
         });
 
-        // Start the initial timer
+        // Initialize
+        detectBrowser();
         startTimer();
     })();
 </script>
