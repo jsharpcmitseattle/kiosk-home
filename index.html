@@ -125,22 +125,6 @@
         }
     }
 
-    // 2. Browser Detection (iPad focus)
-    function detectBrowser() {
-        const ua = navigator.userAgent;
-        const info = document.getElementById('browser-info');
-        
-        if (ua.includes("EdgiOS")) {
-            info.innerText = "Running in: Microsoft Edge";
-        } else if (ua.includes("Safari") && !ua.includes("CriOS")) {
-            // Check if it's running as a standalone web clip
-            const isStandalone = window.navigator.standalone === true;
-            info.innerText = isStandalone ? "Running in: Kiosk Mode (Web Clip)" : "Running in: Safari";
-        } else {
-            info.innerText = "Browser: Other";
-        }
-    }
-
     // 3. Idle Reset (5 Minutes)
     (function() {
         let timeout;
@@ -160,8 +144,7 @@
         ['touchstart', 'click', 'keypress'].forEach(type => {
             document.addEventListener(type, poke, true);
         });
-
-        detectBrowser();
+        
         poke();
     })();
 </script>
