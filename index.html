@@ -3,87 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Kiosk Home</title>
     <style>
         :root {
             --primary-blue: #007AFF;
             --primary-green: #34C759;
-            --bg-gray: #f8f9fc;
-            --text-dark: #333;
-            --text-light: #666;
+            --bg-gray: #f2f2f7; /* iOS system gray */
+            --card-white: #ffffff;
         }
 
         body { 
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            min-height: 100vh; 
+            height: 100vh; 
             margin: 0;
-            background: var(--bg-gray); 
+            background-color: var(--bg-gray);
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden; /* Prevents accidental scrolling/bouncing */
         }
 
         .card { 
-            background: white; 
-            padding: 50px 40px; 
+            background: var(--card-white); 
+            padding: 60px 40px; 
             border-radius: 24px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05); 
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08); 
             text-align: center; 
-            width: 90%; 
-            max-width: 500px;
+            width: 85%; 
+            max-width: 450px;
         }
 
-        h1 { font-size: 32px; font-weight: 700; color: var(--text-dark); margin: 0 0 30px 0; }
-        h3 { font-size: 20px; font-weight: 600; color: var(--text-light); margin: 0 0 10px 0; }
-        p { color: var(--text-light); margin-bottom: 20px; font-size: 16px; }
+        h1 { font-size: 36px; font-weight: 700; color: #000; margin: 0 0 40px 0; }
+        h3 { font-size: 20px; font-weight: 600; color: #333; margin: 0 0 8px 0; }
+        p { color: #666; margin-bottom: 24px; font-size: 17px; }
 
         .btn { 
             display: block;
             width: 100%;
-            padding: 18px; 
-            margin: 10px 0; 
-            font-size: 18px; 
-            font-weight: 700;
-            border-radius: 12px; 
+            padding: 20px; 
+            margin: 12px 0; 
+            font-size: 20px; 
+            font-weight: 600;
+            border-radius: 14px; 
             border: none;
             cursor: pointer; 
-            transition: opacity 0.2s, transform 0.1s;
-            text-decoration: none;
-            box-sizing: border-box;
+            transition: background 0.2s, transform 0.1s;
         }
 
-        .btn:active { transform: scale(0.98); opacity: 0.9; }
-
         .btn-blue { background: var(--primary-blue); color: white; }
+        .btn-blue:active { background: #0056b3; transform: scale(0.98); }
+
         .btn-green { background: var(--primary-green); color: white; margin-top: 15px; }
+        .btn-green:active { background: #28a745; transform: scale(0.98); }
 
         .divider {
+            border: 0;
             height: 1px;
-            background: #eee;
-            margin: 40px 0;
-            border: none;
+            background: #e5e5e7;
+            margin: 45px 0;
         }
 
         input { 
             width: 100%;
-            padding: 16px; 
+            padding: 18px; 
             font-size: 18px; 
             border-radius: 12px; 
-            border: 1px solid #ddd; 
-            background: #fafafa;
+            border: 1px solid #d1d1d6; 
+            background: #fff;
             box-sizing: border-box; 
-            transition: border-color 0.2s;
+            -webkit-appearance: none; /* Removes iOS default styling */
+            margin-bottom: 5px;
         }
 
-        input:focus { outline: none; border-color: var(--primary-blue); background: white; }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
 
         #browser-info {
-            margin-top: 30px;
-            font-size: 11px;
-            font-weight: 800;
+            margin-top: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #aeaeb2;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            opacity: 0.5;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -92,4 +98,73 @@
 <div class="card">
     <h1>Welcome</h1>
     
-    <button class="btn btn-blue" onclick
+    <button class="btn btn-blue" onclick="window.location.href='https://theretirementsolution.com/communications-profile'">
+        Communications Profile
+    </button>
+
+    <hr class="divider">
+
+    <div class="survey-section">
+        <h3>Personalized Survey</h3>
+        <p>Please enter your ID/Code below:</p>
+        <input type="text" id="surveyID" placeholder="Enter ID here..." autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button class="btn btn-green" onclick="goSurvey()">Open My Survey</button>
+    </div>
+
+    <p id="browser-info">Detecting Browser...</p>
+</div>
+
+<script>
+    // 1. Survey Navigation
+    function goSurvey() {
+        const id = document.getElementById('surveyID').value.trim();
+        if (id) {
+            window.location.href = 'https://YOUR-SURVEY-LINK.com/' + encodeURIComponent(id);
+        } else {
+            alert('Please enter an ID');
+        }
+    }
+
+    // 2. Browser Detection (iPad focus)
+    function detectBrowser() {
+        const ua = navigator.userAgent;
+        const info = document.getElementById('browser-info');
+        
+        if (ua.includes("EdgiOS")) {
+            info.innerText = "Running in: Microsoft Edge";
+        } else if (ua.includes("Safari") && !ua.includes("CriOS")) {
+            // Check if it's running as a standalone web clip
+            const isStandalone = window.navigator.standalone === true;
+            info.innerText = isStandalone ? "Running in: Kiosk Mode (Web Clip)" : "Running in: Safari";
+        } else {
+            info.innerText = "Browser: Other";
+        }
+    }
+
+    // 3. Idle Reset (5 Minutes)
+    (function() {
+        let timeout;
+        const idleLimit = 5 * 60 * 1000;
+
+        function reset() {
+            document.getElementById('surveyID').value = '';
+            // Reloads to "Home" state
+            window.location.href = window.location.origin + window.location.pathname; 
+        }
+
+        function poke() {
+            clearTimeout(timeout);
+            timeout = setTimeout(reset, idleLimit);
+        }
+
+        ['touchstart', 'click', 'keypress'].forEach(type => {
+            document.addEventListener(type, poke, true);
+        });
+
+        detectBrowser();
+        poke();
+    })();
+</script>
+
+</body>
+</html>
