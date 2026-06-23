@@ -66,28 +66,5 @@
     </button>
 </div>
 
-<script>
-    // Idle Reset (5 Minutes) - Reloads to home state if left idle
-    (function() {
-        let timeout;
-        const idleLimit = 5 * 60 * 1000;
-
-        function reset() {
-            window.location.href = window.location.origin + window.location.pathname; 
-        }
-
-        function poke() {
-            clearTimeout(timeout);
-            timeout = setTimeout(reset, idleLimit);
-        }
-
-        ['touchstart', 'click', 'keypress'].forEach(type => {
-            document.addEventListener(type, poke, true);
-        });
-        
-        poke();
-    })();
-</script>
-
 </body>
 </html>
