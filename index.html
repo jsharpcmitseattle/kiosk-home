@@ -37,8 +37,6 @@
         }
 
         h1 { font-size: 36px; font-weight: 700; color: #000; margin: 0 0 40px 0; }
-        h3 { font-size: 20px; font-weight: 600; color: #333; margin: 0 0 8px 0; }
-        p { color: #666; margin-bottom: 24px; font-size: 17px; }
 
         .btn { 
             display: block;
@@ -51,46 +49,11 @@
             border: none;
             cursor: pointer; 
             transition: background 0.2s, transform 0.1s;
+            box-sizing: border-box;
         }
 
         .btn-blue { background: var(--primary-blue); color: white; }
         .btn-blue:active { background: #0056b3; transform: scale(0.98); }
-
-        .btn-green { background: var(--primary-green); color: white; margin-top: 15px; }
-        .btn-green:active { background: #28a745; transform: scale(0.98); }
-
-        .divider {
-            border: 0;
-            height: 1px;
-            background: #e5e5e7;
-            margin: 45px 0;
-        }
-
-        input { 
-            width: 100%;
-            padding: 18px; 
-            font-size: 18px; 
-            border-radius: 12px; 
-            border: 1px solid #d1d1d6; 
-            background: #fff;
-            box-sizing: border-box; 
-            -webkit-appearance: none; /* Removes iOS default styling */
-            margin-bottom: 5px;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-        }
-
-        #browser-info {
-            margin-top: 40px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #aeaeb2;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
     </style>
 </head>
 <body>
@@ -101,38 +64,15 @@
     <button class="btn btn-blue" onclick="window.location.href='https://www.insightsprofile.com/tomblack'">
         Communications Profile
     </button>
-
-    <hr class="divider">
-
-    <div class="survey-section">
-        <h3>Personalized Survey</h3>
-        <p>Please enter your ID/Code below:</p>
-        <input type="text" id="surveyID" placeholder="Enter ID here..." autocomplete="off" autocapitalize="off" spellcheck="false">
-        <button class="btn btn-green" onclick="goSurvey()">Open My Survey</button>
-    </div>
-
-
 </div>
 
 <script>
-    // 1. Survey Navigation
-    function goSurvey() {
-        const id = document.getElementById('surveyID').value.trim();
-        if (id) {
-            window.location.href = 'https://YOUR-SURVEY-LINK.com/' + encodeURIComponent(id);
-        } else {
-            alert('Please enter an ID');
-        }
-    }
-
-    // 3. Idle Reset (5 Minutes)
+    // Idle Reset (5 Minutes) - Reloads to home state if left idle
     (function() {
         let timeout;
         const idleLimit = 5 * 60 * 1000;
 
         function reset() {
-            document.getElementById('surveyID').value = '';
-            // Reloads to "Home" state
             window.location.href = window.location.origin + window.location.pathname; 
         }
 
